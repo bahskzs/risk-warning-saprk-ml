@@ -12,6 +12,7 @@ object Prediction {
     val spark = SparkSession.builder().master("local[*]")
       .appName("Prediction").getOrCreate()
 
+    //TODO...  preDF对应的预测内容可以考虑改造成传参处理 labor_supervision_warning.db/ads_labor_key_risk_corp_rank_2020_3_di--> 思考下怎么根据季节变动新的表，
     val preDF = spark.read.format("csv").load("hdfs://" + args(0) + ":8020/user/hive/warehouse/labor_supervision_warning.db/ads_labor_key_risk_corp_rank_2020_3_di")
 
     val newData = preDF.rdd.map(line => line.toString().replaceAll("\\[", "").replaceAll("\\]", "").split(",")).map(i => concat(i))
